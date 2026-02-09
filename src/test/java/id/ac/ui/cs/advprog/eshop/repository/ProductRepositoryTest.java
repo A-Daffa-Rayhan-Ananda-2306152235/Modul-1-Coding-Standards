@@ -106,4 +106,35 @@ class ProductRepositoryTest
 
         assertNull(result);
     }
+
+    @Test
+    void testDeleteExistentProduct()
+    {
+        Product product = new Product();
+        product.setProductId("cb678e9g-1c67-460e-8860-71af6af67bd9");
+        product.setProductName("Sampo Cap Udin");
+        product.setProductQuantity(67);
+        productRepository.create(product);
+
+        productRepository.delete("cb678e9g-1c67-460e-8860-71af6af67bd9");
+
+        Iterator<Product> productIterator = productRepository.findAll();
+        assertFalse(productIterator.hasNext());
+    }
+
+    @Test
+    void testDeleteNonExistentProduct()
+    {
+        Product product = new Product();
+        product.setProductId("cb678e9g-1c67-460e-8860-71af6af67bd9");
+        product.setProductName("Sampo Cap Udin");
+        product.setProductQuantity(67);
+        productRepository.create(product);
+
+        // Delete a non-existent id
+        productRepository.delete("6767676767-676767-67676767-sigmaboy");
+
+        Product result = productRepository.findById("cb678e9g-1c67-460e-8860-71af6af67bd9");
+        assertNotNull(result);
+    }
 }
